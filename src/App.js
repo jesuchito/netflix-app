@@ -125,6 +125,8 @@ function App() {
                   {vistas.map((vista) => (
                     <Vista key={vista.id_vista} vista={vista} />
                   ))}
+                  </>
+                }     
               />
               <Route path="/contenido/:id" element={<ContenidoDetail setUsuarioSeleccionado={setUsuarioSeleccionado} />} />{" "}
               {/* PAGINA DE DETALLE DE CONTENIDO */}
