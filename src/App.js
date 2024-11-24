@@ -13,6 +13,7 @@ import Usuarios from "./components/Usuarios"; // pagina de login pa usuario
 import "./styles/App.css";
 import API_CONFIG from "./config/api";
 import AdministrarVistas from "./components/AdministrarVistas";
+import CrearVista from "./components/CrearVista";
 
 function App() {
   document.title = "NETFLIX";
@@ -106,8 +107,11 @@ function App() {
         <div>
           <main className="content">
             {usuarioSeleccionado && usuarioSeleccionado.rol === 'administrador' && (
-              <div className="welcome-text">
-                <h2>Bienvenido Administrador</h2>
+              <div>
+                <div className="welcome-text">
+                  <h2>Bienvenido Administrador</h2>
+                </div>
+                <NavigationCrearVista />
               </div>
             )}
             <Routes>
@@ -115,16 +119,11 @@ function App() {
                 path="/"
                 element={
                   <>
-                  {usuarioSeleccionado && usuarioSeleccionado.rol === 'administrador' && (
-                    <div className="botonNuevaVista" 
-                      //  onClick={() => setMostrarFormulario(true)}
-                    >
-                      <p>Crear Nueva Vista</p>
-                    </div>
-                  )}
                   {vistas.map((vista) => (
                     <Vista key={vista.id_vista} vista={vista} />
                   ))}
+                  </>
+                }
               />
               <Route path="/contenido/:id" element={<ContenidoDetail setUsuarioSeleccionado={setUsuarioSeleccionado} />} />{" "}
               {/* PAGINA DE DETALLE DE CONTENIDO */}
@@ -134,6 +133,8 @@ function App() {
               {/* PAGINA DE LOGIN */}
               <Route path="/administrarVistas/:id" element={<AdministrarVistas cargarVistas={cargarVistas} />} />{" "}
               {/* PAGINA DE EDITAR VISTA */}
+              <Route path="/crearVista" element={<CrearVista cargarVistas={cargarVistas} />} />{" "}
+              {/* PAGINA DE CREAR VISTA */}
             </Routes>
           </main>
         </div>
@@ -174,6 +175,18 @@ function NavigationHome() {
         alt="Netflix logo"
         onClick={() => navigate("/", { replace: true })}
       ></img>
+    </>
+  );
+}
+
+function NavigationCrearVista() {
+  const navigate = useNavigate();
+
+  return (
+    <>
+      <button className="botonNuevaVista" onClick={() => navigate("/crearVista")}>
+        Crear Vista
+      </button>
     </>
   );
 }
