@@ -115,13 +115,6 @@ function App() {
                 path="/"
                 element={
                   <>
-                  {usuarioSeleccionado && usuarioSeleccionado.rol === 'administrador' && (
-                    <div className="botonNuevaVista" 
-                      //  onClick={() => setMostrarFormulario(true)}
-                    >
-                      <p>Crear Nueva Vista</p>
-                    </div>
-                  )}
                   {vistas.map((vista) => (
                     <Vista key={vista.id_vista} vista={vista} />
                   ))}
