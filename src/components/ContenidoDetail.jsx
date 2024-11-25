@@ -9,7 +9,7 @@ import { FaHeart } from "react-icons/fa";
 function ContenidoDetail({ setUsuarioSeleccionado }) {
   const { state } = useLocation();
   const contenido = state?.contenido;
-  const [error, setError] = useState(null);
+  const [error,setError] = useState(null);
   const [mostrarTemporadas, setMostrarTemporadas] = React.useState(false);
   const [temporadas, setTemporadas] = useState([]);
   const [cargandoTemporadas, setCargandoTemporadas] = useState(false);
