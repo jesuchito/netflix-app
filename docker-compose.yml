@@ -1,0 +1,16 @@
+version: '3.8'
+services:
+  frontend:
+    image: node:latest
+    working_dir: /app
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./:/app
+    command: npm start
+    networks:
+      - flask_network
+
+networks:
+  flask_network:
+    external: true
