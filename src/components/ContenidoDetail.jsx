@@ -169,7 +169,7 @@ function ContenidoDetail({ setUsuarioSeleccionado }) {
     return <p>Error: No se encontró el contenido</p>;
   }
 
-  const isSerie = contenido.tipo.toLowerCase() === "serie";
+  //const isSerie = contenido.tipo.toLowerCase() === "serie";
 
   const handleReproducir = () => {
     setShowReproductor(true);
@@ -201,7 +201,9 @@ function ContenidoDetail({ setUsuarioSeleccionado }) {
               <p>inicia sesion para poder añadir a favoritos</p>
             )}
           </div>
-          <h2>{contenido.tipo}</h2>
+          <h2>
+            {contenido.tipo.charAt(0).toUpperCase() + contenido.tipo.slice(1)}
+          </h2>
           <p>
             <strong>Sinopsis:</strong> {contenido.sinopsis}
           </p>
@@ -215,11 +217,13 @@ function ContenidoDetail({ setUsuarioSeleccionado }) {
             <strong>Duración:</strong> {contenido.duracion} min
           </p>
           <p>
-            <strong>Género:</strong> {contenido.genero}
+            <strong>Género:</strong>{" "}
+            {contenido.genero.charAt(0).toUpperCase() +
+              contenido.genero.slice(1)}
           </p>
         </div>
         <div className="contenido-actions">
-          {isSerie ? (
+          {contenido.tipo.toLowerCase() === "serie" ? (
             <button
               className="contenido-button temporadas"
               onClick={() => handleShowTemporadas(contenido.id_contenido)}
