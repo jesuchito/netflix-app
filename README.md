@@ -36,20 +36,17 @@ Este proyecto es una aplicación frontend desarrollada en **React** como parte d
    npm install
 - **`npm start`**: Inicia el servidor de desarrollo.
 
-
+---
 
 ## Despliegue en Docker 
 
 Este documento describe los pasos necesarios para desplegar una frontend dentro de un contenedor Docker utilizando `docker-compose`.
 
----
 
 ### Requisitos previos
 
 1. **Docker**: Asegúrate de tener instalado Docker en tu sistema. Puedes descargarlo desde [Docker](https://www.docker.com/).
 2. **docker-compose**: Comprueba que tienes instalado `docker-compose`. Si no, sigue las instrucciones de instalación [aquí](https://docs.docker.com/compose/install/).
-
----
 
 ### Pasos para el despliegue
 
@@ -79,9 +76,5 @@ Una vez que los contenedores estén en funcionamiento, puedes verificar el estad
 ```bash
 docker ps
 ```
-
-## ¡Todo listo! 🚀
-
-Tu frontend  ahora está en funcionamiento dentro de un contenedor Docker, junto con sus otros servicios asociados.
 
 
