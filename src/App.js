@@ -117,7 +117,6 @@ function App() {
                   <div className="welcome-text">
                     <h2>Bienvenido Administrador</h2>
                   </div>
-                  <NavigationCrearVista />
                 </div>
               )}
             <Routes>
@@ -125,6 +124,11 @@ function App() {
                 path="/"
                 element={
                   <>
+                    {usuarioSeleccionado && usuarioSeleccionado.rol === 'administrador' && (
+                      <div>
+                        <NavigationCrearVista />
+                      </div>
+                    )}
                     {vistas.map((vista) => (
                       <Vista key={vista.id_vista} vista={vista} />
                     ))}
