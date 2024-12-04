@@ -14,6 +14,7 @@ import "./styles/App.css";
 import API_CONFIG from "./config/api";
 import AdministrarVistas from "./components/AdministrarVistas";
 import CrearVista from "./components/CrearVista";
+import CrearContenido from "./components/CrearContenido";
 
 function App() {
   document.title = "NETFLIX";
@@ -23,13 +24,13 @@ function App() {
   const [usuarioSeleccionado, setUsuarioSeleccionado] = useState(
     JSON.parse(localStorage.getItem("usuarioSeleccionado"))
   );
-  
-    // Resetear el localStorage al iniciar la aplicación
+
+  // Resetear el localStorage al iniciar la aplicación
   useEffect(() => {
-      // Eliminar el usuario almacenado en localStorage al cargar la aplicación
-      localStorage.removeItem("usuarioSeleccionado");
-      setUsuarioSeleccionado(null); // Resetear el estado
-      eliminarfavoritos();
+    // Eliminar el usuario almacenado en localStorage al cargar la aplicación
+    localStorage.removeItem("usuarioSeleccionado");
+    setUsuarioSeleccionado(null); // Resetear el estado
+    eliminarfavoritos();
   }, []);
 
   const eliminarfavoritos = async () => {
@@ -50,7 +51,6 @@ function App() {
         throw new Error(`Error del servidor: ${errorMensaje}`);
       }
       console.log("Lista de favoritos eliminada con éxito.");
-
     } catch (error) {
       console.error("Error en la solicitud DELETE:", error);
     }
@@ -58,11 +58,11 @@ function App() {
 
   const cargarVistas = async () => {
     try {
-        const respuesta = await fetch(`${API_CONFIG.VISTAS}`);
-        const data = await respuesta.json();
-        setVistas(data);
+      const respuesta = await fetch(`${API_CONFIG.VISTAS}`);
+      const data = await respuesta.json();
+      setVistas(data);
     } catch (error) {
-        console.error("Error al cargar las vistas:", error);
+      console.error("Error al cargar las vistas:", error);
     }
   };
 
@@ -99,42 +99,68 @@ function App() {
         </header>
         <div className="welcome-text">
           {usuarioSeleccionado ? (
-            <h2>Explora los mejores contenidos creados para ti: {usuarioSeleccionado.nombre}</h2>
-          ):(
-            <h2>Explora los mejores contenidos creados para ti: no hay usuario</h2>
+            <h2>
+              Explora los mejores contenidos creados para ti:{" "}
+              {usuarioSeleccionado.nombre}
+            </h2>
+          ) : (
+            <h2>
+              Explora los mejores contenidos creados para ti: no hay usuario
+            </h2>
           )}
         </div>
         <div>
           <main className="content">
-            {usuarioSeleccionado && usuarioSeleccionado.rol === 'administrador' && (
-              <div>
-                <div className="welcome-text">
-                  <h2>Bienvenido Administrador</h2>
+            {usuarioSeleccionado &&
+              usuarioSeleccionado.rol === "administrador" && (
+                <div>
+                  <div className="welcome-text">
+                    <h2>Bienvenido Administrador</h2>
+                  </div>
+                  <NavigationCrearVista />
                 </div>
-                <NavigationCrearVista />
-              </div>
-            )}
+              )}
             <Routes>
               <Route
                 path="/"
                 element={
                   <>
-                  {vistas.map((vista) => (
-                    <Vista key={vista.id_vista} vista={vista} />
-                  ))}
+                    {vistas.map((vista) => (
+                      <Vista key={vista.id_vista} vista={vista} />
+                    ))}
                   </>
                 }
               />
-              <Route path="/contenido/:id" element={<ContenidoDetail setUsuarioSeleccionado={setUsuarioSeleccionado} />} />{" "}
+              <Route
+                path="/contenido/:id"
+                element={
+                  <ContenidoDetail
+                    setUsuarioSeleccionado={setUsuarioSeleccionado}
+                  />
+                }
+              />{" "}
               {/* PAGINA DE DETALLE DE CONTENIDO */}
               <Route path="/contenido" element={<ContenidoList />} />{" "}
               {/* PAGINA DE LISTA DE CONTENIDOS */}
-              <Route path="/login" element={<Usuarios setUsuarioSeleccionado={setUsuarioSeleccionado} />} />{" "}
+              <Route
+                path="/login"
+                element={
+                  <Usuarios setUsuarioSeleccionado={setUsuarioSeleccionado} />
+                }
+              />{" "}
               {/* PAGINA DE LOGIN */}
-              <Route path="/administrarVistas/:id" element={<AdministrarVistas cargarVistas={cargarVistas} />} />{" "}
+              <Route
+                path="/administrarVistas/:id"
+                element={<AdministrarVistas cargarVistas={cargarVistas} />}
+              />{" "}
               {/* PAGINA DE EDITAR VISTA */}
-              <Route path="/crearVista" element={<CrearVista cargarVistas={cargarVistas} />} />{" "}
+              <Route
+                path="/crearVista"
+                element={<CrearVista cargarVistas={cargarVistas} />}
+              />{" "}
               {/* PAGINA DE CREAR VISTA */}
+              <Route path="/crearContenido" element={<CrearContenido />} />{" "}
+              {/* PAGINA DE CREAR CONTENIDO */}
             </Routes>
           </main>
         </div>
@@ -184,8 +210,17 @@ function NavigationCrearVista() {
 
   return (
     <>
-      <button className="botonNuevaVista" onClick={() => navigate("/crearVista")}>
+      <button
+        className="botonNuevaVista"
+        onClick={() => navigate("/crearVista")}
+      >
         Crear Vista
+      </button>
+      <button
+        className="botonNuevoContenido"
+        onClick={() => navigate("/crearContenido")}
+      >
+        Crear Contenido
       </button>
     </>
   );
