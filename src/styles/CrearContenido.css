@@ -1,6 +1,7 @@
 .editarContenido {
+    align-items: center;
     margin: auto;
-    width: 75%;
+    width: 40%;
     padding: 30px;
     border: 2px solid #606060;
     border-radius: 10px;
@@ -42,7 +43,7 @@
 .selector{
     margin-top: 0;
     margin-bottom: 20px;
-    width: 30%; /*  no se por que si pongo una cifra random se ajusta perfecto */
+    width: 60%; /*  no se por que si pongo una cifra random se ajusta perfecto */
     display: flex;
     gap: 20px;
     justify-content: left;
