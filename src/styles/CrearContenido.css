@@ -1,0 +1,38 @@
+.editarContenido {
+    margin: auto;
+    width: 75%;
+    padding: 30px;
+    border: 2px solid #606060;
+    border-radius: 10px;
+    background-color: #222;
+}
+
+.editarContenido h4 {
+    font-size: 30px;
+    color: #fff;
+    text-align: center;
+}
+  
+.editarContenido label {
+    font-size: 16px;
+    color: #ccc;
+    font-weight: bold;
+    margin-bottom: 10px;
+    display: block;
+}
+  
+.editarContenido input {
+    width: 60%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #333;
+    border-radius: 5px;
+    background-color: #333;
+    color: #fff;
+    font-size: 16px;
+}
+  
+.editarContenido input:focus {
+    border-color: #c1c1c1;
+    outline: none;
+}

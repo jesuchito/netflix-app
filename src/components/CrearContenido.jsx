@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "../styles/AdministrarVistas.css";
+import "../styles/CrearContenido.css";
 import API_CONFIG from "../config/api";
 
 function CrearContenido() {
@@ -52,7 +52,7 @@ function CrearContenido() {
       genero,
       director,
       elenco,
-      imagen: "contenido_default.jpg",
+      imagen: "contenido_default.jpg", // cambia el nombre de la imagen para los nuevos contenidos aqui
     };
 
     try {
@@ -78,7 +78,7 @@ function CrearContenido() {
 
   return (
     <div>
-      <div className="editarVista">
+      <div className="editarContenido">
         <h4>Crear Contenido</h4>
         <div>
           <label>Título:</label>
