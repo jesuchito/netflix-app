@@ -60,14 +60,7 @@ function CrearContenido() {
             value={descripcion}
           />
         </div>
-        <div>
-          <label>URL de la Imagen:</label>
-          <input
-            type="text"
-            onChange={(e) => setImagen(e.target.value)}
-            value={imagen}
-          />
-        </div>
+
         <div className="botonesEdicion">
           <button onClick={agregarContenido}>Crear</button>
         </div>
