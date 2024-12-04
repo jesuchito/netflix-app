@@ -88,7 +88,7 @@ function CrearContenido() {
             value={titulo}
           />
         </div>
-        <div>
+        <div className="selector">
           <label>Tipo:</label>
           <select onChange={(e) => setTipo(e.target.value)} value={tipo}>
             <option value="">Selecciona un tipo</option>
@@ -99,7 +99,7 @@ function CrearContenido() {
             ))}
           </select>
         </div>
-        <div>
+        <div className="selector">
           <label>Género:</label>
           <select onChange={(e) => setGenero(e.target.value)} value={genero}>
             <option value="">Selecciona un género</option>
@@ -110,7 +110,7 @@ function CrearContenido() {
             ))}
           </select>
         </div>
-        <div>
+        <div className="sinopsis">
           <label>Sinopsis:</label>
           <textarea
             onChange={(e) => setSinopsis(e.target.value)}
