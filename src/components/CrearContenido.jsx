@@ -44,7 +44,7 @@ function CrearContenido() {
       return;
     }
 
-    const contenido = {
+    const nuevoContenido = {
       titulo,
       tipo,
       sinopsis,
@@ -52,6 +52,7 @@ function CrearContenido() {
       genero,
       director,
       elenco,
+      imagen: "contenido_default.jpg",
     };
 
     try {
@@ -60,7 +61,7 @@ function CrearContenido() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(contenido),
+        body: JSON.stringify(nuevoContenido),
       });
 
       if (respuesta.ok) {
