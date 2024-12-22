@@ -84,7 +84,7 @@ function Usuarios({ setUsuarioSeleccionado }) {
       <div className="usuarios">
         <h2 className="titulo">¿Quién eres? Elige tu usuario</h2>
         <div className="perfiles">
-          {usuarios.map((usuario) => (
+          {usuarios.length > 0 && usuarios.map((usuario) => (
             <div
               key={usuario.idUsuario}
               onClick={() => manejarSeleccionUsuario(usuario)}

@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import "../styles/ContenidoDetail.css";
 import Reproductor from "./Reproductor";
 import API_CONFIG from "../config/api";
-import { FaHeart } from "react-icons/fa";
+import { FaHeart, FaTrash } from "react-icons/fa";
 
 function ContenidoDetail({ setUsuarioSeleccionado }) {
   const { state } = useLocation();
@@ -20,6 +20,8 @@ function ContenidoDetail({ setUsuarioSeleccionado }) {
     JSON.parse(localStorage.getItem("usuarioSeleccionado"))
   );
   const [isFavorito, setIsFavorito] = useState(false);
+  const navigate = useNavigate();
+  const [mostrarEliminar, setMostrarEliminar] = useState(false);
 
   useEffect(() => {
     if (usuarioSeleccionado && contenido) {
@@ -110,17 +112,22 @@ function ContenidoDetail({ setUsuarioSeleccionado }) {
       setCargandoTemporadas(true);
       setError(null);
 
-      try {
-        const respuesta = await axios.get(
-          `${API_CONFIG.CONTENIDOS}/${id_contenido}/Temporadas`
-        );
-        setTemporadas(respuesta.data);
-        setMostrarTemporadas(true);
-      } catch (err) {
-        setError("Error al cargar las temporadas");
-      } finally {
-        setCargandoTemporadas(false);
-      }
+      cargarTemporadas(id_contenido);
+
+    }
+  };
+
+  const cargarTemporadas = async (id_contenido) => {
+    try {
+      const respuesta = await axios.get(
+        `${API_CONFIG.CONTENIDOS}/${id_contenido}/Temporadas`
+      );
+      setTemporadas(respuesta.data);
+      setMostrarTemporadas(true);
+    } catch (err) {
+      setError("Error al cargar las temporadas");
+    } finally {
+      setCargandoTemporadas(false);
     }
   };
 
@@ -161,6 +168,65 @@ function ContenidoDetail({ setUsuarioSeleccionado }) {
     }
   };
 
+  const handleCrearTemporada = async (id_contenido) => {
+    const numT = (temporadas.length + 1);
+    const temporada = {
+      Temporada: numT
+    };
+
+    try {
+      const respuesta = await fetch(
+        `${API_CONFIG.CONTENIDOS}/${id_contenido}/Temporadas`,
+        {
+          method: "POST",
+          headers: {
+          "Content-Type": "application/json",
+          },
+          body: JSON.stringify(temporada),}
+      );
+      if (respuesta.ok) {
+        console.log("Temporada creada con éxito.");
+        cargarTemporadas(id_contenido);
+      } else {
+      console.error("Error al crear la temporada.");
+      }
+    } catch (err) {
+      setError("Error al cargar las temporadas");
+    } finally {
+      setCargandoTemporadas(false);
+    }
+  };
+
+  const handleCrearEpisodio = async (temporada) => {
+    navigate(`/contenido/${contenido.id}/crearEpisodio`, {
+      state: { contenido: contenido, nTemporada: temporada.numero },
+    });
+  };
+
+  const handleEliminarContenido = async () => {
+    try {
+      const respuesta = await fetch(`${API_CONFIG.CONTENIDOS}/${contenido.id_contenido}`, {
+        method: "DELETE",
+      });
+
+      if (!respuesta.ok) {
+        const errorMensaje = await respuesta.text();
+        throw new Error(`Error del servidor: ${errorMensaje}`);
+      }
+      console.log("Contenido eliminado con éxito:", contenido.id_contenido);
+      setMostrarEliminar(false);
+      navigate("/", { state: { reload: true } });
+    } catch (error) {
+      console.error("Error en la solicitud:", error);
+    }
+  };
+
+  const handleEditarContenido = async () => {
+    navigate(`/contenido/${contenido.id}/editar`, {
+      state: { contenido: contenido },
+    });
+  };
+
   // Unconditionally define the state
   const [showReproductor, setShowReproductor] = React.useState(false);
 
@@ -179,6 +245,8 @@ function ContenidoDetail({ setUsuarioSeleccionado }) {
     setShowReproductor(false);
   };
 
+  if (error) return <p>Error: {error}</p>;
+
   return (
     <div className="contenido-container">
       <div className="contenido">
@@ -190,12 +258,29 @@ function ContenidoDetail({ setUsuarioSeleccionado }) {
             <h1>{contenido.titulo}</h1>
             {usuarioSeleccionado ? (
               <div className="Like">
+                <div>
                 <FaHeart
                   size={45}
                   color={isFavorito ? "white" : "gray"} // Cambia el color según el estado
                   onClick={handleFavorito} // Llama a la función correspondiente
                   style={{ cursor: "pointer" }} // Cambia el cursor para indicar que es clickeable
                 />
+                </div>
+                {usuarioSeleccionado.rol === "administrador" ? (
+                  <div>
+                    <FaTrash
+                      size={45}
+                      color={"gray"}
+                      onClick={() => setMostrarEliminar(true)}
+                      style={{ cursor: "pointer" }}
+                    />
+                  </div>
+                ) : null}
+                {usuarioSeleccionado.rol === "administrador" ? (
+                  <div>
+                    <button className="boton-oscuro" onClick={() => handleEditarContenido()}>Editar</button>
+                  </div>
+                ) : null}
               </div>
             ) : (
               <p>inicia sesion para poder añadir a favoritos</p>
@@ -280,9 +365,6 @@ function ContenidoDetail({ setUsuarioSeleccionado }) {
                                         onClick={handleReproducir}
                                       >
                                         <div className="contenido-episodio-image">
-                                          {/* <img src={contenido.imagen || "placeholder.jpg"} alt={contenido.titulo} /> */}
-                                          {/* <img src="/assets/img/FRIENDS.jpg" alt="Breaking Bad" /> */}
-                                          {/* IMPORTANTE: HAY QUE ESTANDARIZAR EL NOMBRE DE 'IMAGEN' EN LA BASE DE DATOS */}
                                           <img
                                             src={`/assets/img/${contenido.imagen}`}
                                             alt={`${contenido.imagen}`}
@@ -307,6 +389,12 @@ function ContenidoDetail({ setUsuarioSeleccionado }) {
                                 )}
                               </div>
                             )}
+                            {usuarioSeleccionado &&
+                            usuarioSeleccionado.rol === "administrador" && (
+                              <button className="contenido-button crear" onClick={() => handleCrearEpisodio(temporada)}>
+                                Añadir Episodio
+                              </button>
+                            )}
                           </div>
                         ) : null}
                       </div>
@@ -317,6 +405,12 @@ function ContenidoDetail({ setUsuarioSeleccionado }) {
                     </span>
                   )}
                 </div>
+              )}
+              {usuarioSeleccionado &&
+              usuarioSeleccionado.rol === "administrador" && (
+              <button className="contenido-button crear" onClick={() => handleCrearTemporada(contenido.id_contenido)}>
+                Añadir temporada
+              </button>
               )}
             </div>
           ) : null}
@@ -329,6 +423,19 @@ function ContenidoDetail({ setUsuarioSeleccionado }) {
             contenido={contenido}
             onClose={handleCerrarReproductor}
           />
+        </div>
+      )}
+
+      {mostrarEliminar && (
+        <div className="overlay">
+          <div className="dialogo-eliminar">
+            <h2>{contenido.titulo} se borrará para siempre</h2>
+            <h2>¿Eliminar?</h2>
+            <div>
+              <button className="boton-oscuro" onClick={() => handleEliminarContenido()}>Si</button>
+              <button className="boton-oscuro" onClick={() => setMostrarEliminar(false)}>No</button>
+            </div>
+          </div>
         </div>
       )}
     </div>

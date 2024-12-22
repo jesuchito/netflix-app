@@ -69,6 +69,10 @@
     cursor: pointer;
     transition: background-color 0.3s ease;
   }
+
+  .contenido-button.crear {
+    margin-top: 20px;
+  }
   
   .contenido-button:hover {
     background-color: #b00710;
@@ -197,5 +201,44 @@
 
 .Like{
   margin-right: 40px !important;
+  display: flex;
+  align-items: center;
 }
-  
+
+.Like div{
+  margin-left: 1em;
+}
+
+.boton-oscuro{
+  padding: 10px 20px;
+  font-size: 16px;
+  color: #ffffff;
+  background-color: #333333;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.dialogo-eliminar{
+  background-color: #141414; 
+  padding: 30px;
+  border-radius: 10px;
+  width: 700px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.7);
+  animation: fadeIn 0.3s ease-in-out; 
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.dialogo-eliminar div{
+  display: flex;
+  flex-direction: row;
+  margin-top: 1.25em;
+}
+
+.dialogo-eliminar button{
+  margin: 0 0.625em;
+}
